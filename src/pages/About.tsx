@@ -1,12 +1,10 @@
 import { useRef } from 'react';
-import { Target, Award, Users, Lightbulb, ArrowRight } from 'lucide-react';
+import { NavLink } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { Target, Award, Users, Lightbulb } from 'lucide-react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
-interface AboutProps {
-  onNavigate: (page: string) => void;
-}
-
-export default function About({ onNavigate }: AboutProps) {
+export default function About() {
   const valuesRef = useRef<HTMLDivElement>(null);
   const teamRef = useRef<HTMLDivElement>(null);
 
@@ -41,30 +39,37 @@ export default function About({ onNavigate }: AboutProps) {
   ];
 
   return (
-    <div className="min-h-screen ">
-
+    <div className="min-h-screen">
+      <Helmet>
+        <title>About LB Interiors | Luxury Interior Designers in Gorakhpur</title>
+        <meta
+          name="description"
+          content="LB Interiors is Gorakhpur’s most trusted interior design company offering luxury and turnkey interior solutions for homes and offices."
+        />
+        <meta
+          name="keywords"
+          content="best interior designers in gorakhpur, luxury interior designer, interior design company near me, interior design consultation, interior designer gorakhpur"
+        />
+      </Helmet>
 
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Parallax Background */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat transform scale-105"
           style={{
             backgroundImage:
-              'url(https://plus.unsplash.com/premium_photo-1676823553207-758c7a66e9bb?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8SW50ZXJpb3JzfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=600)',
+              'ur[](https://plus.unsplash.com/premium_photo-1676823553207-758c7a66e9bb?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8SW50ZXJpb3JzfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=600)',
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-[#004445]/95  "></div>
-
-          {/* Animated overlay glows */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#004445]/95"></div>
           <div className="absolute top-20 left-10 w-32 h-32 bg-[#f8b400]/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-10 w-40 h-40 bg-[#f8b400]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div
+            className="absolute bottom-20 right-10 w-40 h-40 bg-[#f8b400]/10 rounded-full blur-3xl animate-pulse"
+            style={{ animationDelay: '1s' }}
+          ></div>
         </div>
 
-        {/* Content Container */}
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-white py-20 my-10">
           <div className="max-w-4xl text-center lg:text-left animate-fadeIn">
-
-            {/* Main Heading with Highlighted Word */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-semibold mb-4 sm:mb-6 leading-tight">
               Crafting Interiors That Reflect Your{' '}
               <span className="text-[#f8b400] relative inline-block">
@@ -74,42 +79,41 @@ export default function About({ onNavigate }: AboutProps) {
                 </svg>
               </span>
             </h1>
-
-            {/* Subheading */}
             <p className="text-base sm:text-lg md:text-xl font-light lg:text-2xl mb-6 sm:mb-8 text-gray-200 max-w-3xl mx-auto lg:mx-0">
               LB Interiors - A name trusted for creative, functional, and luxury interior design in Gorakhpur.
             </p>
-
-            {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-center lg:justify-start">
-              <button
-                onClick={() => onNavigate('contact')}
+              <NavLink
+                to="/contact"
                 className="w-full sm:w-auto bg-[#f8b400] text-[#004445] px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-medium text-base sm:text-lg hover:bg-[#e0a300] transition-all flex items-center justify-center group"
               >
                 Get Free Consultation
-                <svg className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
-              </button>
-              <button
-                onClick={() => onNavigate('portfolio')}
+              </NavLink>
+              <NavLink
+                to="/portfolio"
                 className="w-full sm:w-auto border border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-medium text-base sm:text-lg hover:bg-white hover:text-[#004445] transition-all duration-300 backdrop-blur-sm"
               >
                 View Our Work
-              </button>
+              </NavLink>
             </div>
-
-            {/* Quick Stats Badges */}
             <div className="mt-8 sm:mt-12 flex flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start">
-              <div className=" px-4 sm:px-6 py-2 sm:py-3  ">
+              <div className="px-4 sm:px-6 py-2 sm:py-3">
                 <span className="text-[#f8b400] font-medium text-lg sm:text-xl">500+</span>
                 <span className="text-white text-xs sm:text-sm ml-2">Projects</span>
               </div>
-              <div className="px-4 sm:px-6 py-2 sm:py-3  ">
+              <div className="px-4 sm:px-6 py-2 sm:py-3">
                 <span className="text-[#f8b400] font-medium text-lg sm:text-xl">15+</span>
                 <span className="text-white text-xs sm:text-sm ml-2">Years</span>
               </div>
-              <div className="px-4 sm:px-6 py-2 sm:py-3 ">
+              <div className="px-4 sm:px-6 py-2 sm:py-3">
                 <span className="text-[#f8b400] font-medium text-lg sm:text-xl">98%</span>
                 <span className="text-white text-xs sm:text-sm ml-2">Satisfaction</span>
               </div>
@@ -117,7 +121,6 @@ export default function About({ onNavigate }: AboutProps) {
           </div>
         </div>
 
-        {/* Scroll Indicator */}
         <div className="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
           <div className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-white rounded-full flex justify-center">
             <div className="w-1 h-2 sm:h-3 bg-white rounded-full mt-2"></div>
@@ -147,12 +150,12 @@ export default function About({ onNavigate }: AboutProps) {
                   are with you every step of the way.
                 </p>
               </div>
-              <button
-                onClick={() => onNavigate('portfolio')}
+              <NavLink
+                to="/portfolio"
                 className="mt-8 bg-[#f8b400] text-[#004445] px-8 py-3 rounded-2xl font-semibold hover:bg-[#e0a300] transition-all duration-300 transform hover:scale-105 inline-flex items-center"
               >
                 Explore Our Work
-              </button>
+              </NavLink>
             </div>
             <div className="relative">
               <img
@@ -180,13 +183,13 @@ export default function About({ onNavigate }: AboutProps) {
             <h2 className="text-4xl md:text-5xl font-semibold text-[#004445] mb-4">Our Values & Approach</h2>
             <p className="text-xl text-gray-600">What drives us to deliver excellence every single time</p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, index) => (
               <div
                 key={index}
-                className={`bg-white p-8 rounded-2xl shadow-lg  ${valuesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                  }`}
+                className={`bg-white p-8 rounded-2xl shadow-lg ${
+                  valuesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <div className="bg-[#f8b400] w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
@@ -211,7 +214,6 @@ export default function About({ onNavigate }: AboutProps) {
               </div>
               <h2 className="text-4xl md:text-5xl font-semibold">Our Design Process</h2>
             </div>
-
             <div className="space-y-8">
               {[
                 {
@@ -258,8 +260,6 @@ export default function About({ onNavigate }: AboutProps) {
         </div>
       </section>
 
-
-
       <section className="py-20 bg-[#f8b400] m-10 rounded-2xl">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl md:text-5xl font-semibold text-[#004445] mb-6">
@@ -268,12 +268,12 @@ export default function About({ onNavigate }: AboutProps) {
           <p className="text-xl text-[#004445] mb-8 max-w-2xl mx-auto">
             Let's create something beautiful together. Schedule your free consultation today.
           </p>
-          <button
-            onClick={() => onNavigate('contact')}
-            className="bg-[#004445] text-white px-10 py-4 rounded-2xl font-semibold "
+          <NavLink
+            to="/contact"
+            className="bg-[#004445] text-white px-10 py-4 rounded-2xl font-semibold"
           >
             Schedule a Consultation
-          </button>
+          </NavLink>
         </div>
       </section>
     </div>

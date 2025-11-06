@@ -1,14 +1,11 @@
 import { useState, useEffect } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
-interface NavigationProps {
-  currentPage: string;
-  onNavigate: (page: string) => void;
-}
-
-export default function Navigation({ currentPage, onNavigate }: NavigationProps) {
+export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,16 +29,15 @@ export default function Navigation({ currentPage, onNavigate }: NavigationProps)
   }, [isMobileMenuOpen]);
 
   const navItems = [
-    { name: 'Home', page: 'home' },
-    { name: 'About Us', page: 'about' },
-    { name: 'Services', page: 'services' },
-    { name: 'Portfolio', page: 'portfolio' },
-    { name: 'Contact', page: 'contact' },
+    { name: 'Home', path: '/' },
+    { name: 'About Us', path: '/about' },
+    { name: 'Services', path: '/services' },
+    { name: 'Blog', path: '/blog' },
+    { name: 'Contact', path: '/contact' },
   ];
 
-  const handleNavigate = (page: string) => {
-    onNavigate(page);
-    setIsMobileMenuOpen(false);
+  const handleMobileMenuToggle = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   return (
@@ -53,52 +49,55 @@ export default function Navigation({ currentPage, onNavigate }: NavigationProps)
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <button
-            onClick={() => handleNavigate('home')}
-            className="flex items-center  rounded-lg transition-transform duration-300 "
+          <NavLink
+            to="/"
+            className="flex items-center rounded-lg transition-transform duration-300"
             aria-label="Go to home page"
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             <img 
               src="./logo.png" 
-              alt="Company Logo" 
+              alt="LB Interiors Logo" 
               className="h-10 w-auto sm:h-12 md:h-14 object-contain"
             />
-          </button>
+          </NavLink>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
             {navItems.map((item) => (
-              <button
-                key={item.page}
-                onClick={() => handleNavigate(item.page)}
-                className={`px-3 lg:px-4 py-2 rounded-lg font-medium text-sm lg:text-base transition-all duration-300 ${
-                  currentPage === item.page
-                    ? 'text-[#f8b400] '
-                    : isScrolled
-                    ? 'text-[#004445] hover:text-[#f8b400] hover:bg-[#f8b400]/5'
-                    : 'text-white hover:text-[#f8b400] '
-                }`}
-                aria-current={currentPage === item.page ? 'page' : undefined}
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  `px-3 lg:px-4 py-2 rounded-lg font-medium text-sm lg:text-base transition-all duration-300 ${
+                    isActive
+                      ? 'text-[#f8b400]'
+                      : isScrolled
+                      ? 'text-[#004445] hover:text-[#f8b400] hover:bg-[#f8b400]/5'
+                      : 'text-white hover:text-[#f8b400]'
+                  }`
+                }
+                aria-current={location.pathname === item.path ? 'page' : undefined}
               >
                 {item.name}
-              </button>
+              </NavLink>
             ))}
           </div>
 
           {/* CTA Button - Desktop */}
-          <button
-            onClick={() => handleNavigate('contact')}
-            className="hidden md:flex items-center justify-center bg-[#f8b400] text-[#004445] px-5 lg:px-6 py-2 lg:py-2.5 rounded-2xl font-medium text-sm lg:text-base hover:bg-[#e0a300]  focus:outline-none focus:ring-2 focus:ring-[#f8b400] focus:ring-offset-2 whitespace-nowrap"
+          <NavLink
+            to="/contact"
+            className="hidden md:flex items-center justify-center bg-[#f8b400] text-white px-5 lg:px-6 py-2 lg:py-2.5 rounded-2xl font-medium text-sm lg:text-base  "
           >
-            Get Free Consultation
-          </button>
+            Call Now
+          </NavLink>
 
           {/* Mobile Menu Toggle */}
           <button
-            className={`md:hidden p-2 rounded-lg transition-colors duration-300  ${
-              isScrolled ? 'text-[#004445]' : 'text-white'
+            className={`md:hidden p-2 rounded-lg transition-colors duration-300 ${
+              isScrolled ? 'text-[#f8b400]' : 'text-white'
             }`}
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            onClick={handleMobileMenuToggle}
             aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isMobileMenuOpen}
           >
@@ -112,7 +111,7 @@ export default function Navigation({ currentPage, onNavigate }: NavigationProps)
             {/* Backdrop */}
             <div 
               className="fixed inset-0 bg-black/50 md:hidden z-40 mt-16"
-              onClick={() => setIsMobileMenuOpen(false)}
+              onClick={handleMobileMenuToggle}
               aria-hidden="true"
             />
             
@@ -120,30 +119,34 @@ export default function Navigation({ currentPage, onNavigate }: NavigationProps)
             <div className="md:hidden absolute left-4 right-4 mt-4 py-2 bg-white rounded-xl shadow-2xl z-50 animate-in slide-in-from-top duration-300">
               <div className="flex flex-col">
                 {navItems.map((item, index) => (
-                  <button
-                    key={item.page}
-                    onClick={() => handleNavigate(item.page)}
-                    className={`text-left px-6 py-3.5 transition-all duration-200 ${
-                      currentPage === item.page
-                        ? 'text-[#f8b400] bg-[#f8b400]/10 font-semibold'
-                        : 'text-[#004445] hover:text-[#f8b400] hover:bg-gray-50'
-                    } ${index === 0 ? 'rounded-t-xl' : ''} ${
-                      index === navItems.length - 1 ? 'rounded-b-xl' : ''
-                    }`}
-                    aria-current={currentPage === item.page ? 'page' : undefined}
+                  <NavLink
+                    key={item.path}
+                    to={item.path}
+                    className={({ isActive }) =>
+                      `text-left px-6 py-3.5 transition-all duration-200 ${
+                        isActive
+                          ? 'text-[#f8b400] bg-[#f8b400]/10 font-semibold'
+                          : 'text-[#004445] hover:text-[#f8b400] hover:bg-gray-50'
+                      } ${index === 0 ? 'rounded-t-xl' : ''} ${
+                        index === navItems.length - 1 ? 'rounded-b-xl' : ''
+                      }`
+                    }
+                    onClick={handleMobileMenuToggle}
+                    aria-current={location.pathname === item.path ? 'page' : undefined}
                   >
                     {item.name}
-                  </button>
+                  </NavLink>
                 ))}
               </div>
               
               <div className="px-4 pt-4 pb-2 border-t border-gray-100">
-                <button
-                  onClick={() => handleNavigate('contact')}
-                  className="w-full bg-[#f8b400] text-[#004445] px-6 py-3 rounded-2xl font-semibold hover:bg-[#e0a300] transition-all duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-[#f8b400] focus:ring-offset-2"
+                <NavLink
+                  to="/contact"
+                  className="w-full bg-[#f8b400] text-white px-6 py-3 rounded-2xl font-semibold hover:bg-green-600 transition-all duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                  onClick={handleMobileMenuToggle}
                 >
-                  Get Free Consultation
-                </button>
+                  Call Now
+                </NavLink>
               </div>
             </div>
           </>
