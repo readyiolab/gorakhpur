@@ -132,10 +132,10 @@ export default function Services() {
                 </svg>
               </span>
             </h1>
-            <p className="text-base sm:text-lg md:text-xl font-light lg:text-2xl mb-6 sm:mb-8 text-gray-200 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl font-light lg:text-2xl mb-6 sm:mb-8 text-gray-200 max-w-3xl mx-auto lg:mx-0">
               End-to-end interior solutions tailored to elevate your lifestyle and business
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-center lg:justify-start">
               <NavLink
                 to="/contact"
                 className="w-full sm:w-auto bg-[#f8b400] text-[#004445] px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-medium text-base sm:text-lg hover:bg-[#e0a300] transition-all flex items-center justify-center group"
@@ -157,7 +157,7 @@ export default function Services() {
                 View Portfolio
               </NavLink>
             </div>
-            <div className="mt-8 sm:mt-12 flex flex-wrap gap-3 sm:gap-4 justify-center">
+            <div className="mt-8 sm:mt-12 flex flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start">
               <div className="backdrop-blur-md px-4 sm:px-6 py-2 sm:py-3">
                 <span className="text-[#f8b400] font-medium text-lg sm:text-xl">500+</span>
                 <span className="text-white text-xs sm:text-sm ml-2">Projects Delivered</span>

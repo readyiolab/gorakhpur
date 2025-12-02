@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Mail, Phone, MapPin, Clock, Instagram, Linkedin, Facebook } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Instagram, Linkedin, Facebook, MessageCircle } from 'lucide-react';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -17,6 +17,15 @@ export default function Contact() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitted(true);
+    
+    // Track conversion in Google Analytics
+    if (window.gtag) {
+      window.gtag('event', 'consultation_request', {
+        'value': 'consultation_inquiry',
+        'currency': 'INR'
+      });
+    }
+    
     setTimeout(() => {
       setIsSubmitted(false);
       setFormData({
@@ -36,8 +45,25 @@ export default function Contact() {
     });
   };
 
+  // Call Handler
+  const handleCall = () => {
+    window.location.href = 'tel:+919820995913';
+  };
+
+  // Email Handler
+  const handleEmail = () => {
+    window.location.href = 'mailto:lbinteriors.in@gmail.com?subject=Interior Design Consultation - LB Interiors&body=Hi LB Interiors,%0A%0AI am interested in your interior design services. Please get back to me with more details.%0A%0AThank you!';
+  };
+
+  // WhatsApp Handler
+  const handleWhatsApp = () => {
+    const message = "Hi LB Interiors! I'm interested in your interior design services. Can you help me with a consultation?";
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://wa.me/919820995913?text=${encodedMessage}`, '_blank');
+  };
+
   return (
-    <div className="min-h-screen pt-24">
+    <div className="min-h-screen ">
       <Helmet>
         <title>Contact LB Interiors | Best Interior Designers in Gorakhpur</title>
         <meta
@@ -50,12 +76,27 @@ export default function Contact() {
         />
       </Helmet>
 
-      <section className="py-20 bg-gradient-to-br from-[#004445] to-[#2c786c] text-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat transform scale-105"
+          style={{
+            backgroundImage:
+              'ur[](https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1920)',
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-[#004445]/95 via-[#004445]/80 to-[#2c786c]/70"></div>
+          <div className="absolute top-20 left-10 w-32 h-32 bg-[#f8b400]/10 rounded-full blur-3xl animate-pulse"></div>
+          <div
+            className="absolute bottom-20 right-10 w-40 h-40 bg-[#f8b400]/10 rounded-full blur-3xl animate-pulse"
+            style={{ animationDelay: '1s' }}
+          ></div>
+        </div>
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-white py-20 my-10">
+          <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-7xl font-semibold mb-4 sm:mb-6 leading-tight">
             Let's Design Your <span className="text-[#f8b400]">Dream Space</span> Together
           </h1>
-          <p className="text-xl md:text-2xl max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl font-light lg:text-2xl mb-6 sm:mb-8 text-gray-200 max-w-3xl mx-auto lg:mx-0">
             Reach out to LB Interiors for a free consultation and personalized interior design solutions
           </p>
         </div>
@@ -70,6 +111,7 @@ export default function Contact() {
                 With over 24 years of experience and a 100% satisfaction rate, our design team is ready to bring your vision to life. Share your details below, and we'll connect to discuss your project.
               </p>
               <div className="space-y-6">
+                {/* Location */}
                 <div className="flex items-start space-x-4">
                   <div className="bg-[#f8b400] w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
                     <MapPin size={24} className="text-[#004445]" />
@@ -82,28 +124,42 @@ export default function Contact() {
                     <p className="text-gray-700">Aligarh, Lucknow, Uttar Pradesh 226024</p>
                   </div>
                 </div>
+
+                {/* Phone - CLICKABLE */}
                 <div className="flex items-start space-x-4">
                   <div className="bg-[#f8b400] w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
                     <Phone size={24} className="text-[#004445]" />
                   </div>
-                  <div>
-                    <h3 className="font-bold text-[#004445] mb-1">Phone</h3>
-                    <a href="tel:+919820995913" className="text-gray-700 hover:text-[#f8b400] transition-colors">
-                      +91 98209 95913
-                    </a>
+                  <div className="w-full">
+                    <h3 className="font-bold text-[#004445] mb-2">Phone</h3>
+                    <button
+                      onClick={handleCall}
+                      className="inline-flex items-center gap-2 text-gray-700 hover:text-white  px-4 py-2 rounded-lg transition-all duration-300  font-semibold"
+                    >
+                      <Phone size={18} />
+                      +91 98209 95913 (Tap to Call)
+                    </button>
                   </div>
                 </div>
+
+                {/* Email - CLICKABLE */}
                 <div className="flex items-start space-x-4">
                   <div className="bg-[#f8b400] w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
                     <Mail size={24} className="text-[#004445]" />
                   </div>
-                  <div>
-                    <h3 className="font-bold text-[#004445] mb-1">Email</h3>
-                    <a href="mailto:info@lbinteriors.com" className="text-gray-700 hover:text-[#f8b400] transition-colors">
-                      info@lbinteriors.com
-                    </a>
+                  <div className="w-full">
+                    <h3 className="font-bold text-[#004445] mb-2">Email</h3>
+                    <button
+                      onClick={handleEmail}
+                      className="inline-flex items-center gap-2 text-gray-700 hover:text-white  px-4 py-2 rounded-lg transition-all duration-300  font-semibold"
+                    >
+                      <Mail size={18} />
+                      lbinteriors.in@gmail.com
+                    </button>
                   </div>
                 </div>
+
+                {/* Business Hours */}
                 <div className="flex items-start space-x-4">
                   <div className="bg-[#f8b400] w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
                     <Clock size={24} className="text-[#004445]" />
@@ -112,28 +168,32 @@ export default function Contact() {
                     <h3 className="font-bold text-[#004445] mb-1">Business Hours</h3>
                     <p className="text-gray-700">Monday - Saturday: 10:00 AM - 7:00 PM</p>
                     <p className="text-gray-700">Sunday: By Appointment</p>
+                    <p className="text-gray-700 font-semibold text-[#f8b400] mt-1">Available 24/7 for Inquiries via WhatsApp & Email</p>
                   </div>
                 </div>
+
+                {/* Social Media & WhatsApp */}
                 <div className="flex items-start space-x-4">
                   <div className="bg-[#f8b400] w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Instagram size={24} className="text-[#004445]" />
+                    <MessageCircle size={24} className="text-[#004445]" />
                   </div>
-                  <div>
-                    <h3 className="font-bold text-[#004445] mb-1">Follow Us</h3>
-                    <div className="flex space-x-4">
+                  <div className="w-full">
+                    <h3 className="font-bold text-[#004445] mb-2">Connect With Us</h3>
+                    <div className="flex flex-wrap gap-2">
+                      
                       <a
                         href="https://www.instagram.com/_lbinteriors_/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-gray-700 hover:text-[#f8b400] transition-colors"
+                        className=" text-black px-4 py-2 rounded-lg transition-all duration-300 font-semibold"
                       >
                         Instagram
                       </a>
                       <a
-                        href="https://www.linkedin.com/company/lb-interiors"
+                        href="https://www.linkedin.com/company/lbinteriors"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-gray-700 hover:text-[#f8b400] transition-colors"
+                        className=" text-black px-4 py-2 rounded-lg  transition-all duration-300 font-semibold"
                       >
                         LinkedIn
                       </a>
@@ -141,7 +201,7 @@ export default function Contact() {
                         href="https://www.facebook.com/profile.php?id=61583248502163"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-gray-700 hover:text-[#f8b400] transition-colors"
+                        className="] text-black px-4 py-2 rounded-lg  transition-all duration-300 font-semibold"
                       >
                         Facebook
                       </a>
@@ -149,6 +209,7 @@ export default function Contact() {
                   </div>
                 </div>
               </div>
+
               <div className="mt-8 bg-[#faf5e4] p-6 rounded-lg">
                 <h3 className="font-bold text-[#004445] mb-3 text-xl">Why Choose LB Interiors?</h3>
                 <ul className="space-y-2 text-gray-700">
@@ -162,10 +223,12 @@ export default function Contact() {
                 </ul>
               </div>
             </div>
+
+            {/* Contact Form */}
             <div className="bg-[#faf5e4] p-8 rounded-lg shadow-xl">
               <h3 className="text-2xl font-semibold text-[#004445] mb-6">Request a Free Consultation</h3>
               {isSubmitted ? (
-                <div className="bg-[#f8b400] text-[#004445] p-8 rounded-lg text-center">
+                <div className="bg-[#f8b400] text-[#004445] p-8 rounded-lg text-center animate-bounce">
                   <div className="text-5xl mb-4">✓</div>
                   <h4 className="text-2xl font-bold mb-2">Thank You!</h4>
                   <p className="text-lg">
@@ -204,42 +267,8 @@ export default function Contact() {
                       placeholder="+91 98209 95913"
                     />
                   </div>
-                  <div>
-                    <label htmlFor="email" className="block text-[#004445] font-semibold mb-2">
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-[#f8b400] focus:outline-none transition-colors"
-                      placeholder="your@email.com"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="spaceType" className="block text-[#004445] font-semibold mb-2">
-                      Type of Space *
-                    </label>
-                    <select
-                      id="spaceType"
-                      name="spaceType"
-                      value={formData.spaceType}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-[#f8b400] focus:outline-none transition-colors"
-                    >
-                      <option value="">Select space type</option>
-                      <option value="home">Home / Residential</option>
-                      <option value="office">Office / Corporate</option>
-                      <option value="restaurant">Restaurant / Cafe</option>
-                      <option value="retail">Retail Store</option>
-                      <option value="kitchen">Modular Kitchen</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
+                 
+                 
                   <div>
                     <label htmlFor="message" className="block text-[#004445] font-semibold mb-2">
                       Project Details
@@ -256,7 +285,7 @@ export default function Contact() {
                   </div>
                   <button
                     type="submit"
-                    className="w-full bg-green-500 text-white py-4 rounded-2xl font-bold text-md flex items-center justify-center hover:bg-green-600 transition-all duration-300"
+                    className="w-full bg-[#f8b400] text-[#004445] py-4 rounded-2xl font-bold text-md flex items-center justify-center hover:bg-[#e0a300] transition-all duration-300 transform hover:scale-[1.02]"
                   >
                     Submit Request
                   </button>
@@ -270,13 +299,15 @@ export default function Contact() {
         </div>
       </section>
 
+      {/* Service Areas */}
       <section className="py-20 bg-[#faf5e4]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-[#004445] mb-4">Our Service Areas</h2>
             <p className="text-xl text-gray-600">
-              Proudly serving Gorakhpur, Lucknow, and surrounding areas with premium interior design services
-            </p>
+  Our service areas: GIDA, Nanda Nagar, and nearby locations
+</p>
+
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {[
@@ -291,7 +322,7 @@ export default function Contact() {
             ].map((area, index) => (
               <div
                 key={index}
-                className="bg-white p-4 rounded-2xl shadow text-center font-semibold text-[#004445] hover:bg-[#f8b400] hover:text-[#004445] transition-all duration-300"
+                className="bg-white p-4 rounded-2xl shadow text-center font-semibold text-[#004445] hover:bg-[#f8b400] hover:text-white transition-all duration-300 cursor-pointer"
               >
                 {area}
               </div>
@@ -300,19 +331,22 @@ export default function Contact() {
         </div>
       </section>
 
+      {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-[#2c786c] to-[#004445] text-white m-10 rounded-2xl shadow-xl">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl md:text-5xl font-semibold mb-6">Ready to Transform Your Space?</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
-            With 24+ years of experience and 100% client satisfaction, we're here to bring your vision to life. Call now for a free consultation!
+            With 24+ years of experience and 100% client satisfaction, we're here to bring your vision to life. Choose your preferred way to connect!
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <NavLink
-              to="/contact"
-              className="bg-green-500 text-white px-10 py-4 rounded-2xl font-medium text-md hover:bg-green-600 transition-all duration-300"
+          <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
+            <button
+              onClick={handleCall}
+              className="bg-[#004445] text-white px-10 py-4 rounded-2xl font-medium text-md hover:bg-white hover:text-[#004445] transition-all duration-300 flex items-center justify-center gap-2"
             >
-              Call Now +91 98209 95913
-            </NavLink>
+              <Phone size={20} />
+              Call Now
+            </button>
+            
             <NavLink
               to="/portfolio"
               className="border-2 border-white text-white px-10 py-4 rounded-2xl font-medium text-md hover:bg-white hover:text-[#004445] transition-all duration-300"

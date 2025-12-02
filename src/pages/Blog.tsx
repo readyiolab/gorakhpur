@@ -36,7 +36,7 @@ export default function Blog() {
   ];
 
   return (
-    <div className="min-h-screen pt-24">
+    <div className="min-h-screen ">
       <Helmet>
         <title>Interior Design Tips and Ideas | LB Interiors Gorakhpur</title>
         <meta
@@ -50,7 +50,7 @@ export default function Blog() {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat transform scale-105"
           style={{
@@ -65,8 +65,8 @@ export default function Blog() {
             style={{ animationDelay: '1s' }}
           ></div>
         </div>
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-white py-20">
-          <div className="max-w-4xl text-center animate-fadeIn">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-white py-20 my-10">
+          <div className="max-w-4xl text-center lg:text-left animate-fadeIn">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold mb-4 sm:mb-6 leading-tight">
               Interior Design{' '}
               <span className="text-[#f8b400] relative inline-block">
@@ -76,7 +76,7 @@ export default function Blog() {
                 </svg>
               </span>
             </h1>
-            <p className="text-base sm:text-lg md:text-xl font-light lg:text-2xl mb-6 sm:mb-8 text-gray-200 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl font-light lg:text-2xl mb-6 sm:mb-8 text-gray-200 max-w-3xl mx-auto lg:mx-0">
               Explore expert advice, trends, and inspiration from LB Interiors to transform your space.
             </p>
             <NavLink
@@ -101,9 +101,8 @@ export default function Blog() {
             {blogPosts.map((post, index) => (
               <div
                 key={index}
-                className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 ${
-                  postsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                }`}
+                className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 ${postsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                  }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <img src={post.image} alt={post.title} className="w-full h-48 object-cover rounded-t-2xl" />

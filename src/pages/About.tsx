@@ -57,10 +57,10 @@ export default function About() {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat transform scale-105"
           style={{
             backgroundImage:
-              'ur[](https://plus.unsplash.com/premium_photo-1676823553207-758c7a66e9bb?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8SW50ZXJpb3JzfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=600)',
+              'ur[](https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1920)',
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-[#004445]/95"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-[#004445]/95 via-[#004445]/80 to-[#2c786c]/70"></div>
           <div className="absolute top-20 left-10 w-32 h-32 bg-[#f8b400]/10 rounded-full blur-3xl animate-pulse"></div>
           <div
             className="absolute bottom-20 right-10 w-40 h-40 bg-[#f8b400]/10 rounded-full blur-3xl animate-pulse"
@@ -110,7 +110,7 @@ export default function About() {
                 <span className="text-white text-xs sm:text-sm ml-2">Projects</span>
               </div>
               <div className="px-4 sm:px-6 py-2 sm:py-3">
-                <span className="text-[#f8b400] font-medium text-lg sm:text-xl">15+</span>
+                <span className="text-[#f8b400] font-medium text-lg sm:text-xl">24+</span>
                 <span className="text-white text-xs sm:text-sm ml-2">Years</span>
               </div>
               <div className="px-4 sm:px-6 py-2 sm:py-3">
@@ -187,9 +187,8 @@ export default function About() {
             {values.map((value, index) => (
               <div
                 key={index}
-                className={`bg-white p-8 rounded-2xl shadow-lg ${
-                  valuesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                }`}
+                className={`bg-white p-8 rounded-2xl shadow-lg ${valuesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                  }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <div className="bg-[#f8b400] w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
@@ -214,7 +213,9 @@ export default function About() {
               </div>
               <h2 className="text-4xl md:text-5xl font-semibold">Our Design Process</h2>
             </div>
-            <div className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
+
+              {/* Map items with fixed box size */}
               {[
                 {
                   step: '01',
@@ -247,15 +248,30 @@ export default function About() {
                     'We conduct a thorough inspection with you to ensure everything meets our high standards and your satisfaction.',
                 },
               ].map((process, index) => (
-                <div key={index} className="flex items-start space-x-6 bg-white/10 p-6 rounded-lg backdrop-blur-sm">
-                  <div className="text-5xl font-bold text-[#f8b400] flex-shrink-0">{process.step}</div>
-                  <div>
-                    <h3 className="text-2xl font-bold mb-2">{process.title}</h3>
-                    <p className="text-gray-200">{process.description}</p>
-                  </div>
+                <div
+                  key={index}
+                  className="
+        bg-white/10 
+        backdrop-blur-sm 
+        p-8 
+        rounded-2xl 
+        text-white 
+        flex 
+        flex-col 
+        h-auto         
+        justify-start
+        shadow-xl 
+        border border-white/10
+      "
+                >
+                  <div className="text-3xl font-semibold text-[#f8b400]">{process.step}</div>
+                  <h3 className="text-2xl font-semibold mt-4 mb-2">{process.title}</h3>
+                  <p className="text-gray-200">{process.description}</p>
                 </div>
               ))}
+
             </div>
+
           </div>
         </div>
       </section>

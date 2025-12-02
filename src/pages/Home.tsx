@@ -16,10 +16,10 @@ export default function Home() {
   const testimonialsVisible = useScrollAnimation(testimonialsRef);
 
   const stats = [
-    { number: '500+', label: 'Projects Completed' },
-    { number: '15+', label: 'Years Experience' },
-    { number: '450+', label: 'Happy Clients' },
-    { number: '98%', label: 'Satisfaction Rate' },
+    { number: '900+', label: 'Projects Completed' },
+    { number: '24+', label: 'Years Experience' },
+    { number: '810+', label: 'Happy Clients' },
+    { number: '100%', label: 'Satisfaction Rate' },
   ];
 
   const services = [
@@ -35,7 +35,7 @@ export default function Home() {
     },
     {
       title: 'Restaurant & Retail',
-      description: 'Design captivating commercial spaces that attract and engage customers.',
+      description: 'Design captivating commercial spaces  that attract and engage customers.',
       image: 'https://res.cloudinary.com/dw4e01qx8/f_auto,q_auto/images/odudmi9ncfezv9rszqbu',
     },
     {
