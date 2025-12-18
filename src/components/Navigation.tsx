@@ -18,6 +18,11 @@ export default function Navigation() {
     return () => { document.body.style.overflow = 'unset'; };
   }, [isMobileMenuOpen]);
 
+  // Smooth scroll to top on route change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [location.pathname]);
+
   const navItems = [
     { name: 'Home', path: '/' },
     { name: 'About Us', path: '/about' },
@@ -39,16 +44,16 @@ export default function Navigation() {
     <>
       {/* Navbar */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-5'
+        isScrolled ? 'bg-white shadow-md' : 'bg-transparent'
       }`}>
-        <div className="container mx-auto px-4 flex items-center justify-between">
+        <div className="container mx-auto px-3  flex items-center justify-between">
 
-          {/* BIGGER LOGO */}
+          {/* Logo - Bigger on Desktop, Smaller on Mobile */}
           <NavLink to="/" onClick={closeMenu}>
             <img
               src="./logo.png"
               alt="LB Interiors"
-              className="h-16 sm:h-20 md:h-24 w-auto object-contain"
+              className="h-16 md:h-36 w-auto object-contain"
             />
           </NavLink>
 
@@ -59,7 +64,7 @@ export default function Navigation() {
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  `font-medium transition-colors ${
+                  `font-medium text-lg transition-colors ${
                     isActive
                       ? 'text-[#f8b400]'
                       : isScrolled
@@ -72,13 +77,13 @@ export default function Navigation() {
               </NavLink>
             ))}
 
-            {/* DESKTOP BUTTON — CHANGED TO "CALL NOW" */}
+            {/* Desktop Call Button */}
             <button
               onClick={callNow}
-              className="bg-[#f8b400] text-[#004445] px-5 py-2.5 rounded-full font-semibold flex items-center gap-2 hover:bg-[#e5a800] transition"
+              className="bg-[#f8b400] text-[#004445] px-6 py-3 rounded-full font-semibold flex items-center gap-2 hover:bg-[#e5a800] transition"
             >
-              <Phone size={18} />
-              <span className="hidden lg:inline">Call Now</span>
+              <Phone size={20} />
+              <span>Call Now</span>
             </button>
           </div>
 
@@ -93,51 +98,77 @@ export default function Navigation() {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <>
-          <div
-            className="fixed inset-0 bg-black/50 z-40 md:hidden"
-            onClick={closeMenu}
-          />
-
-          <div className="fixed top-16 left-4 right-4 bg-white rounded-2xl shadow-2xl z-50 overflow-hidden md:hidden">
-            <div className="py-4">
-              {navItems.map((item, index) => (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  onClick={closeMenu}
-                  className={({ isActive }) =>
-                    `block px-6 py-3 text-lg font-medium transition-colors ${
-                      isActive
-                        ? 'text-[#f8b400] bg-[#f8b400]/10'
-                        : 'text-[#004445] hover:bg-gray-50'
-                    }`
-                  }
-                >
-                  {item.name}
-                </NavLink>
-              ))}
-            </div>
-          </div>
-        </>
+        <div
+          className="fixed inset-0 bg-black/60 z-40 md:hidden transition-opacity"
+          onClick={closeMenu}
+        />
       )}
 
-      {/* FIXED CALL NOW BUTTON (Mobile Only) */}
-      <button
-        onClick={callNow}
-        className="fixed bottom-24 right-5 bg-[#f8b400] text-[#004445] p-4 rounded-full shadow-xl hover:scale-110 transition z-40 md:hidden"
-      >
-        <Phone size={26} />
-      </button>
+      {/* Mobile Menu - Slide from Left */}
+      <div className={`fixed top-0 left-0 h-full w-4/5 max-w-sm bg-white z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
+        isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+      }`}>
+        
+        {/* Mobile Menu Header */}
+        <div className="flex items-center justify-between p-4 border-b border-gray-200">
+          <img
+            src="./logo.png"
+            alt="LB Interiors"
+            className="h-12 w-auto object-contain"
+          />
+          <button
+            onClick={closeMenu}
+            className="p-2 text-[#004445] hover:bg-gray-100 rounded-full"
+            aria-label="Close menu"
+          >
+            <X size={24} />
+          </button>
+        </div>
+
+        {/* Mobile Menu Items */}
+        <div className="flex flex-col py-4">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              onClick={closeMenu}
+              className={({ isActive }) =>
+                `px-6 py-4 text-lg font-medium transition-colors border-l-4 ${
+                  isActive
+                    ? 'text-[#f8b400] bg-[#f8b400]/10 border-[#f8b400]'
+                    : 'text-[#004445] hover:bg-gray-50 border-transparent'
+                }`
+              }
+            >
+              {item.name}
+            </NavLink>
+          ))}
+        </div>
+
+        {/* Mobile Menu Call Button */}
+        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-200 bg-white">
+          <button
+            onClick={() => {
+              callNow();
+              closeMenu();
+            }}
+            className="w-full bg-[#f8b400] text-[#004445] px-6 py-4 rounded-full font-bold text-lg flex items-center justify-center gap-3 hover:bg-[#e5a800] transition shadow-lg"
+          >
+            <Phone size={22} />
+            Call Now
+          </button>
+        </div>
+      </div>
 
       {/* WhatsApp Floating Button (Mobile Only) */}
       <button
         onClick={openWhatsApp}
         className="fixed bottom-5 right-5 bg-[#25D366] text-white p-4 rounded-full shadow-xl hover:scale-110 transition z-40 md:hidden"
+        aria-label="Open WhatsApp"
       >
-        <MessageCircle size={30} />
+        <MessageCircle size={28} />
       </button>
     </>
   );

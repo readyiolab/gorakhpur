@@ -247,7 +247,7 @@ export default function Home() {
               { text: 'Expert team of designers and architects' },
               { text: 'Turnkey solutions from concept to completion' },
               { text: 'Premium quality materials and finishes' },
-              { text: '15+ years of industry experience' },
+              { text: '24+ years of industry experience' },
               { text: 'On-time project delivery guaranteed' },
               { text: 'Personalized design consultation' },
             ].map((item, index) => (

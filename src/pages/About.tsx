@@ -114,7 +114,7 @@ export default function About() {
                 <span className="text-white text-xs sm:text-sm ml-2">Years</span>
               </div>
               <div className="px-4 sm:px-6 py-2 sm:py-3">
-                <span className="text-[#f8b400] font-medium text-lg sm:text-xl">98%</span>
+                <span className="text-[#f8b400] font-medium text-lg sm:text-xl">100%</span>
                 <span className="text-white text-xs sm:text-sm ml-2">Satisfaction</span>
               </div>
             </div>
@@ -164,7 +164,7 @@ export default function About() {
                 className="rounded-2xl shadow-2xl"
               />
               <div className="absolute -bottom-6 -left-6 bg-[#f8b400] text-[#004445] p-6 rounded-2xl shadow-xl">
-                <div className="text-3xl font-medium">15+</div>
+                <div className="text-3xl font-medium">24+</div>
                 <div className="text-sm font-semibold">Years of Excellence</div>
               </div>
             </div>

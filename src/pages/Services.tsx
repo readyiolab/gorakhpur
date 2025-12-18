@@ -229,7 +229,7 @@ export default function Services() {
                 },
                 {
                   title: 'Experienced Team',
-                  description: '15+ years of expertise in residential and commercial interior design.',
+                  description: '24+ years of expertise in residential and commercial interior design.',
                 },
                 {
                   title: 'Timely Delivery',

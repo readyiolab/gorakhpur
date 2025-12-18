@@ -28,7 +28,7 @@ export default function Footer() {
               <img 
                 src="./logo.png" 
                 alt="LB Interiors Logo" 
-                className="h-10 w-auto object-contain"
+                className="h-40 w-auto object-contain"
               />
             </NavLink>
             <p className="text-gray-300 mb-4 leading-relaxed">
