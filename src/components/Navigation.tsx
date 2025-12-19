@@ -162,6 +162,14 @@ export default function Navigation() {
         </div>
       </div>
 
+      <button
+  onClick={callNow}
+  className="fixed bottom-24 right-5 bg-[#f8b400] text-[#004445] p-4 rounded-full shadow-xl hover:scale-110 transition z-40 md:hidden"
+  aria-label="Call Now"
+>
+  <Phone size={28} />
+</button>
+
       {/* WhatsApp Floating Button (Mobile Only) */}
       <button
         onClick={openWhatsApp}

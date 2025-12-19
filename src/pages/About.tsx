@@ -106,7 +106,7 @@ export default function About() {
             </div>
             <div className="mt-8 sm:mt-12 flex flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start">
               <div className="px-4 sm:px-6 py-2 sm:py-3">
-                <span className="text-[#f8b400] font-medium text-lg sm:text-xl">500+</span>
+                <span className="text-[#f8b400] font-medium text-lg sm:text-xl">900+</span>
                 <span className="text-white text-xs sm:text-sm ml-2">Projects</span>
               </div>
               <div className="px-4 sm:px-6 py-2 sm:py-3">

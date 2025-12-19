@@ -1,150 +1,185 @@
-import { useRef } from 'react';
-import { NavLink } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
-import { ArrowRight } from 'lucide-react';
-import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import { Calendar, User, ArrowRight } from "lucide-react";
+import { blogApi } from "@/lib/api/forms";
 
-export default function Blog() {
-  const postsRef = useRef<HTMLDivElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
 
-  const postsVisible = useScrollAnimation(postsRef);
-  const ctaVisible = useScrollAnimation(ctaRef);
+interface Blog {
+  blog_id: number;
+  blog_title: string;
+  blog_slug: string;
+  blog_description: string;
+  blog_image: string;
+  blog_content: string;
+  blog_author: string;
+  created_at: string;
+  updated_at: string;
+  blog_tags?: string;
+  blog_status: string;
+  blog_views: number;
+}
 
-  const blogPosts = [
-    {
-      title: 'Top 5 Modular Kitchen Designs for 2025',
-      excerpt: 'Discover the latest trends in modular kitchen designs, including L-shaped layouts, smart storage, and premium finishes.',
-      image: 'https://images.pexels.com/photos/2062426/pexels-photo-2062426.jpeg?auto=compress&cs=tinysrgb&w=800',
-      date: 'October 15, 2025',
-      readTime: '5 min read',
-    },
-    {
-      title: 'How to Create a Luxury Home Interior on a Budget',
-      excerpt: 'Learn expert tips to achieve a luxurious look for your home without breaking the bank.',
-      image: 'https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg?auto=compress&cs=tinysrgb&w=800',
-      date: 'October 10, 2025',
-      readTime: '7 min read',
-    },
-    {
-      title: 'Maximizing Small Spaces: Design Ideas for Compact Homes',
-      excerpt: 'Explore creative ways to optimize space in small apartments or homes with smart design solutions.',
-      image: 'https://images.pexels.com/photos/1571463/pexels-photo-1571463.jpeg?auto=compress&cs=tinysrgb&w=800',
-      date: 'October 5, 2025',
-      readTime: '6 min read',
-    },
-  ];
+const Blog = () => {
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await blogApi.getAll("lb_interiors");
+        setBlogs(response.blogs || []);
+      } catch (err) {
+        console.error("Failed to fetch blogs:", err);
+        setError("Failed to load blog posts. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
+  const formatDate = (dateString: string) => {
+    try {
+      return new Date(dateString).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    } catch {
+      return "Date unavailable";
+    }
+  };
+
+  const stripHtml = (html: string) => {
+    const tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+  };
+
+  const getExcerpt = (content: string, length = 150) => {
+    const text = stripHtml(content);
+    return text.length > length ? text.substring(0, length) + "..." : text;
+  };
 
   return (
-    <div className="min-h-screen ">
+    <>
       <Helmet>
-        <title>Interior Design Tips and Ideas | LB Interiors Gorakhpur</title>
-        <meta
-          name="description"
-          content="Discover expert interior design tips, home décor ideas, and trends from LB Interiors’s professional designers in Gorakhpur."
-        />
-        <meta
-          name="keywords"
-          content="interior design for new homes, modular kitchen design, luxury interior designer, best interior designers in gorakhpur"
-        />
+        <title>Blog - LB Interior Designs</title>
+        <meta name="description" content="Read our latest blog posts about interior design, home improvement, and lifestyle trends." />
       </Helmet>
-
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat transform scale-105"
-          style={{
-            backgroundImage:
-              'ur[](https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1920)',
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-[#004445]/95 via-[#004445]/80 to-[#2c786c]/70"></div>
-          <div className="absolute top-20 left-10 w-32 h-32 bg-[#f8b400]/10 rounded-full blur-3xl animate-pulse"></div>
-          <div
-            className="absolute bottom-20 right-10 w-40 h-40 bg-[#f8b400]/10 rounded-full blur-3xl animate-pulse"
-            style={{ animationDelay: '1s' }}
-          ></div>
-        </div>
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-white py-20 my-10">
-          <div className="max-w-4xl text-center lg:text-left animate-fadeIn">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold mb-4 sm:mb-6 leading-tight">
-              Interior Design{' '}
-              <span className="text-[#f8b400] relative inline-block">
-                Tips & Ideas
-                <svg className="absolute -bottom-2 left-0 w-full" height="12" viewBox="0 0 200 12" fill="none">
-                  <path d="M2 10C50 5 150 5 198 10" stroke="#f8b400" strokeWidth="3" strokeLinecap="round" />
-                </svg>
-              </span>
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl font-light lg:text-2xl mb-6 sm:mb-8 text-gray-200 max-w-3xl mx-auto lg:mx-0">
-              Explore expert advice, trends, and inspiration from LB Interiors to transform your space.
-            </p>
-            <NavLink
-              to="/contact"
-              className="bg-[#f8b400] text-[#004445] px-8 sm:px-10 py-3 sm:py-4 rounded-2xl font-medium text-base sm:text-lg hover:bg-[#e0a300] inline-flex items-center"
-            >
-              Get Free Consultation
-              <ArrowRight className="ml-2" size={20} />
-            </NavLink>
+      <div className="bg-white">
+        {/* Hero Section - With top padding for fixed navbar */}
+        <div className="pt-24 md:pt-32 pb-16 md:pb-24 bg-gradient-to-br from-[#004445] via-[#003333] to-[#002d2d] text-white">
+          <div className="container mx-auto px-4 md:px-8">
+            <div className="max-w-4xl">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 leading-tight tracking-tight">Our Blog</h1>
+              <p className="text-lg md:text-xl text-white/90 max-w-3xl leading-relaxed">
+                Discover insights, design tips, and inspiration to transform your living spaces into beautiful havens
+              </p>
+            </div>
           </div>
         </div>
-      </section>
 
-      {/* Blog Posts Section */}
-      <section ref={postsRef} className="py-20 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-semibold text-[#004445] mb-4">Latest Blog Posts</h2>
-            <p className="text-xl text-gray-600">Stay updated with the latest interior design trends and ideas</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogPosts.map((post, index) => (
-              <div
-                key={index}
-                className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 ${postsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                  }`}
-                style={{ transitionDelay: `${index * 100}ms` }}
-              >
-                <img src={post.image} alt={post.title} className="w-full h-48 object-cover rounded-t-2xl" />
-                <div className="p-6">
-                  <div className="flex justify-between text-sm text-gray-500 mb-2">
-                    <span>{post.date}</span>
-                    <span>{post.readTime}</span>
-                  </div>
-                  <h3 className="text-xl font-semibold text-[#004445] mb-3">{post.title}</h3>
-                  <p className="text-gray-700 mb-4">{post.excerpt}</p>
-                  <NavLink
-                    to="/contact"
-                    className="text-[#2c786c] font-semibold hover:text-[#f8b400] transition-colors flex items-center"
-                  >
-                    Read More
-                    <ArrowRight size={16} className="ml-2" />
-                  </NavLink>
-                </div>
+        {/* Blog Posts Section */}
+        <div className="container mx-auto px-4 md:px-8 py-16 md:py-28">
+          {loading ? (
+            <div className="flex justify-center items-center min-h-96">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-[#f8b400] mx-auto mb-6"></div>
+                <p className="text-xl text-gray-600">Loading blog posts...</p>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
+          ) : error ? (
+            <div className="flex justify-center items-center min-h-96">
+              <p className="text-xl text-red-600">{error}</p>
+            </div>
+          ) : blogs.length === 0 ? (
+            <div className="flex flex-col justify-center items-center min-h-96">
+              <p className="text-xl text-gray-600 mb-6">No blog posts yet.</p>
+              <Link to="/" className="bg-[#004445] text-white px-8 py-3 rounded-lg hover:bg-[#003333] font-medium">
+                Back to Home
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {blogs.map((blog) => (
+                <div
+                  key={blog.blog_id}
+                  className="overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col h-full group border border-gray-200 rounded-xl bg-white"
+                >
+                  {/* Featured Image */}
+                  {blog.blog_image && (
+                    <Link to={`/blog/${blog.blog_slug}`} className="relative w-full h-56 overflow-hidden bg-gray-200 block">
+                      <img
+                        src={blog.blog_image}
+                        alt={blog.blog_title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                    </Link>
+                  )}
 
-      {/* CTA Section */}
-      <section
-        ref={ctaRef}
-        className="py-20 bg-gradient-to-r from-[#2c786c] to-[#004445] text-white m-10 rounded-2xl shadow-xl"
-      >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-semibold mb-6">Inspired to Redesign Your Space?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Contact LB Interiors to bring these ideas to life with a personalized design consultation.
-          </p>
-          <NavLink
-            to="/contact"
-            className="bg-[#f8b400] text-[#004445] px-10 py-4 rounded-2xl font-medium text-md hover:bg-[#e0a300] transition-all duration-300"
-          >
-            Schedule a Free Consultation
-          </NavLink>
+                  <div className="p-8 flex-1 flex flex-col">
+                    {/* Title */}
+                    <h2 className="text-2xl font-bold mb-4 line-clamp-2 group-hover:text-[#004445] transition-colors leading-tight">
+                      <Link to={`/blog/${blog.blog_slug}`}>{blog.blog_title}</Link>
+                    </h2>
+
+                    {/* Meta Info */}
+                    <div className="flex flex-wrap gap-6 text-sm text-gray-600 mb-6 pb-6 border-b border-gray-200">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="w-5 h-5 text-[#f8b400]" />
+                        {formatDate(blog.created_at)}
+                      </div>
+                      {blog.blog_author && (
+                        <div className="flex items-center gap-2">
+                          <User className="w-5 h-5 text-[#f8b400]" />
+                          {blog.blog_author}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-base text-gray-700 mb-6 flex-grow line-clamp-3 leading-relaxed">
+                      {getExcerpt(blog.blog_description || blog.blog_content, 120)}
+                    </p>
+
+                    {/* Tags */}
+                    {blog.blog_tags && (
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {blog.blog_tags.split(",").slice(0, 3).map((tag, idx) => (
+                          <span
+                            key={idx}
+                            className="inline-block bg-[#faf5e4] text-[#004445] px-4 py-2 rounded-full text-xs font-semibold hover:bg-[#f8b400]/20 transition-colors"
+                          >
+                            #{tag.trim()}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Footer Button */}
+                    <Link 
+                      to={`/blog/${blog.blog_slug}`} 
+                      className="w-full bg-[#004445] hover:bg-[#003333] text-white py-3 px-4 rounded-lg text-center font-semibold flex items-center justify-center gap-2 transition-all duration-300 group/btn"
+                    >
+                      Read More
+                      <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      </section>
-    </div>
+      </div>
+    </>
   );
 }
+
+export default Blog;

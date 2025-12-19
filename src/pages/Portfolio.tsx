@@ -213,15 +213,15 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
               <div className="bg-[#faf5e4] p-8 rounded-2xl">
-                <div className="text-3xl font-medium text-[#f8b400] mb-2">500+</div>
+                <div className="text-3xl font-medium text-[#f8b400] mb-2">900+</div>
                 <div className="text-[#004445] font-semibold">Projects Delivered</div>
               </div>
               <div className="bg-[#faf5e4] p-8 rounded-lg">
-                <div className="text-3xl font-medium text-[#f8b400] mb-2">450+</div>
+                <div className="text-3xl font-medium text-[#f8b400] mb-2">810+</div>
                 <div className="text-[#004445] font-semibold">Happy Clients</div>
               </div>
               <div className="bg-[#faf5e4] p-8 rounded-lg">
-                <div className="text-3xl font-medium text-[#f8b400] mb-2">15+</div>
+                <div className="text-3xl font-medium text-[#f8b400] mb-2">24+</div>
                 <div className="text-[#004445] font-semibold">Years Experience</div>
               </div>
             </div>

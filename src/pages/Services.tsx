@@ -159,15 +159,15 @@ export default function Services() {
             </div>
             <div className="mt-8 sm:mt-12 flex flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start">
               <div className="backdrop-blur-md px-4 sm:px-6 py-2 sm:py-3">
-                <span className="text-[#f8b400] font-medium text-lg sm:text-xl">500+</span>
+                <span className="text-[#f8b400] font-medium text-lg sm:text-xl">900+</span>
                 <span className="text-white text-xs sm:text-sm ml-2">Projects Delivered</span>
               </div>
               <div className="backdrop-blur-md px-4 sm:px-6 py-2 sm:py-3">
-                <span className="text-[#f8b400] font-medium text-lg sm:text-xl">15+</span>
+                <span className="text-[#f8b400] font-medium text-lg sm:text-xl">24+</span>
                 <span className="text-white text-xs sm:text-sm ml-2">Years Experience</span>
               </div>
               <div className="backdrop-blur-md px-4 sm:px-6 py-2 sm:py-3">
-                <span className="text-[#f8b400] font-medium text-lg sm:text-xl">98%</span>
+                <span className="text-[#f8b400] font-medium text-lg sm:text-xl">100%</span>
                 <span className="text-white text-xs sm:text-sm ml-2">Client Satisfaction</span>
               </div>
             </div>

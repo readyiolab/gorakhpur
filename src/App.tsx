@@ -10,6 +10,7 @@ const Services = lazy(() => import('./pages/Services'));
 const Portfolio = lazy(() => import('./pages/Portfolio'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Blog = lazy(() => import('./pages/Blog'));
+const BlogDetail = lazy(() => import('./pages/BlogDetail'));
 
 // Loading Component
 const PageLoader = () => {
@@ -90,6 +91,11 @@ const router = createBrowserRouter([
         path: '/blog',
         element: <Blog />,
         handle: { title: 'Interior Design Blog | LB Interiors' },
+      },
+      {
+        path: '/blog/:slug',
+        element: <BlogDetail />,
+        handle: { title: 'Interior Design Blog Post | LB Interiors' },
       },
     ],
   },

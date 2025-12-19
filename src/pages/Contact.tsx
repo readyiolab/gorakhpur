@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Mail, Phone, MapPin, Clock, Instagram, Linkedin, Facebook, MessageCircle } from 'lucide-react';
+import { contactApi } from '@/lib/api/forms';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -13,29 +14,92 @@ export default function Contact() {
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+    
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+    }
+    
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'Phone number is required';
+    } else if (!/^\+?[\d\s-]{10,}$/.test(formData.phone)) {
+      newErrors.phone = 'Please enter a valid phone number';
+    }
+    
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+    
+    if (!formData.message.trim()) {
+      newErrors.message = 'Project details are required';
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = 'Please provide more details about your project (minimum 10 characters)';
+    }
+    
+    return newErrors;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
     
-    // Track conversion in Google Analytics
-    if (window.gtag) {
-      window.gtag('event', 'consultation_request', {
-        'value': 'consultation_inquiry',
-        'currency': 'INR'
-      });
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
     }
     
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({
-        name: '',
-        phone: '',
-        email: '',
-        spaceType: '',
-        message: '',
-      });
-    }, 3000);
+    setErrors({});
+    setIsLoading(true);
+
+    // Call API
+    contactApi.submitInteriors({
+      contact_name: formData.name,
+      contact_phone: formData.phone,
+      contact_email: formData.email || undefined,
+      contact_project_details: formData.message,
+      contact_location: formData.spaceType || undefined,
+    }).then((response) => {
+      if (response.success) {
+        setIsSubmitted(true);
+        // Track conversion in Google Analytics
+        if (window.gtag) {
+          window.gtag('event', 'consultation_request', {
+            'value': 'consultation_inquiry',
+            'currency': 'INR'
+          });
+        }
+        
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setFormData({
+            name: '',
+            phone: '',
+            email: '',
+            spaceType: '',
+            message: '',
+          });
+          setIsLoading(false);
+        }, 3000);
+      } else {
+        // Handle API errors
+        if (response.errors && Array.isArray(response.errors)) {
+          const apiErrors: Record<string, string> = {};
+          response.errors.forEach((error: any) => {
+            apiErrors[error.path] = error.msg;
+          });
+          setErrors(apiErrors);
+        }
+        setIsLoading(false);
+      }
+    }).catch((error) => {
+      console.error('Error:', error);
+      setErrors({ submit: 'An error occurred. Please try again.' });
+      setIsLoading(false);
+    });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -237,6 +301,12 @@ export default function Contact() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {errors.submit && (
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+                      {errors.submit}
+                    </div>
+                  )}
+                  
                   <div>
                     <label htmlFor="name" className="block text-[#004445] font-semibold mb-2">
                       Your Name *
@@ -248,10 +318,16 @@ export default function Contact() {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-[#f8b400] focus:outline-none transition-colors"
+                      className={`w-full px-4 py-3 rounded-lg border-2 focus:outline-none transition-colors ${
+                        errors.name 
+                          ? 'border-red-500 focus:border-red-500' 
+                          : 'border-gray-300 focus:border-[#f8b400]'
+                      }`}
                       placeholder="Enter your full name"
                     />
+                    {errors.name && <p className="text-red-600 text-sm mt-1">{errors.name}</p>}
                   </div>
+
                   <div>
                     <label htmlFor="phone" className="block text-[#004445] font-semibold mb-2">
                       Phone Number *
@@ -263,15 +339,54 @@ export default function Contact() {
                       value={formData.phone}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-[#f8b400] focus:outline-none transition-colors"
+                      className={`w-full px-4 py-3 rounded-lg border-2 focus:outline-none transition-colors ${
+                        errors.phone 
+                          ? 'border-red-500 focus:border-red-500' 
+                          : 'border-gray-300 focus:border-[#f8b400]'
+                      }`}
                       placeholder="+91 98209 95913"
                     />
+                    {errors.phone && <p className="text-red-600 text-sm mt-1">{errors.phone}</p>}
                   </div>
-                 
-                 
+
+                  <div>
+                    <label htmlFor="email" className="block text-[#004445] font-semibold mb-2">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className={`w-full px-4 py-3 rounded-lg border-2 focus:outline-none transition-colors ${
+                        errors.email 
+                          ? 'border-red-500 focus:border-red-500' 
+                          : 'border-gray-300 focus:border-[#f8b400]'
+                      }`}
+                      placeholder="your.email@example.com"
+                    />
+                    {errors.email && <p className="text-red-600 text-sm mt-1">{errors.email}</p>}
+                  </div>
+
+                  <div>
+                    <label htmlFor="spaceType" className="block text-[#004445] font-semibold mb-2">
+                      Type of Space / Location
+                    </label>
+                    <input
+                      type="text"
+                      id="spaceType"
+                      name="spaceType"
+                      value={formData.spaceType}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-[#f8b400] focus:outline-none transition-colors"
+                      placeholder="e.g., Residential, Office, Commercial"
+                    />
+                  </div>
+
                   <div>
                     <label htmlFor="message" className="block text-[#004445] font-semibold mb-2">
-                      Project Details
+                      Project Details *
                     </label>
                     <textarea
                       id="message"
@@ -279,16 +394,27 @@ export default function Contact() {
                       value={formData.message}
                       onChange={handleChange}
                       rows={4}
-                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-[#f8b400] focus:outline-none transition-colors resize-none"
-                      placeholder="Tell us about your project requirements, timeline, and any specific preferences..."
+                      className={`w-full px-4 py-3 rounded-lg border-2 focus:outline-none transition-colors resize-none ${
+                        errors.message 
+                          ? 'border-red-500 focus:border-red-500' 
+                          : 'border-gray-300 focus:border-[#f8b400]'
+                      }`}
+                      placeholder="Tell us about your project requirements, timeline, and any specific preferences... (minimum 10 characters)"
                     ></textarea>
+                    <div className="flex justify-between items-center mt-1">
+                      {errors.message && <p className="text-red-600 text-sm">{errors.message}</p>}
+                      <p className="text-gray-600 text-xs ml-auto">{formData.message.length} / 10+ characters</p>
+                    </div>
                   </div>
+
                   <button
                     type="submit"
-                    className="w-full bg-[#f8b400] text-[#004445] py-4 rounded-2xl font-bold text-md flex items-center justify-center hover:bg-[#e0a300] transition-all duration-300 transform hover:scale-[1.02]"
+                    disabled={isLoading}
+                    className="w-full bg-[#f8b400] text-[#004445] py-4 rounded-2xl font-bold text-md flex items-center justify-center hover:bg-[#e0a300] transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Submit Request
+                    {isLoading ? 'Submitting...' : 'Submit Request'}
                   </button>
+
                   <p className="text-sm text-gray-600 text-center">
                     By submitting this form, you agree to be contacted by LB Interiors regarding your project.
                   </p>

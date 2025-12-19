@@ -45,7 +45,7 @@ export default function Footer() {
                 <Instagram size={20} />
               </a>
               <a
-                href="https://www.linkedin.com/company/lb-interiors"
+                href="https://www.linkedin.com/company/lbinteriors/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
@@ -124,7 +124,7 @@ export default function Footer() {
               <div className="flex items-center gap-3">
                 <Mail size={20} className="text-[#f8b400]" />
                 <a href="mailto:info@lbinteriors.com" className="hover:text-[#f8b400] transition-colors">
-                  info@lbinteriors.com
+                  lbinteriors.in@gmail.com
                 </a>
               </div>
               <div className="flex items-start gap-3">
